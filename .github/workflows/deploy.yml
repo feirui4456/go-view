@@ -1,9 +1,11 @@
 name: Deploy GoView to GitHub Pages
 
 on:
+  workflow_dispatch:
   push:
     branches:
-      - main  # 如果你的默认分支叫 master，这里改成 master
+      - main  
+      - master  # 如果你的默认分支叫 master，这里改成 master
 
 permissions:
   contents: read
