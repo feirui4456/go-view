@@ -38,7 +38,7 @@ const router = createRouter({
 
 export function setupRouter(app: App) {
   app.use(router);
-  // 创建路由守卫
-  createRouterGuards(router)
+  // // 创建路由守卫
+  // createRouterGuards(router)   👈 在这行最前面加上 // 注释掉
 }
 export default router
