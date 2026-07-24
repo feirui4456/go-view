@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main  
-      - master  # 如果你的默认分支叫 master，这里改成 master
+      - master
+      - main
 
 permissions:
   contents: read
@@ -26,10 +26,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
@@ -37,7 +37,7 @@ jobs:
           version: 8
 
       - name: Install Dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build
         run: pnpm run build
