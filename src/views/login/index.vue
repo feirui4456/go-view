@@ -199,38 +199,28 @@ const shuffleHandle = () => {
   }, carouselInterval)
 }
 
-// 登录
-const handleSubmit = async (e: Event) => {
+// 登录（直接免密登录）
+const handleSubmit = (e: Event) => {
   e.preventDefault()
-  formRef.value.validate(async (errors: any) => {
+  formRef.value.validate((errors: any) => {
     if (!errors) {
-      const { username, password } = formInline
       loading.value = true
-      // 提交请求
-      const res = await loginApi({
-        username,
-        password
-      })
-      if(res && res.data) {
-        const { tokenValue, tokenName } = res.data.token
-        const { nickname, username, id } = res.data.userinfo
-
-        // 存储到 pinia 
-        systemStore.setItem(SystemStoreEnum.USER_INFO, {
-          [SystemStoreUserInfoEnum.USER_TOKEN]: tokenValue,
-          [SystemStoreUserInfoEnum.TOKEN_NAME]: tokenName,
-          [SystemStoreUserInfoEnum.USER_ID]: id,
-          [SystemStoreUserInfoEnum.USER_NAME]: username,
-          [SystemStoreUserInfoEnum.NICK_NAME]: nickname,
-          t
-        })
-        
-        window['$message'].success(t('login.login_success'))
-        routerTurnByName(PageEnum.BASE_HOME_NAME, true)
+      
+      // 1. 模拟写入 Token 和用户信息（防止其他页面因找不到 Token 报空指针）
+      const mockUser = {
+        token: { tokenValue: 'mock_token_123', tokenName: 'token' },
+        userinfo: { nickname: '管理员', username: 'admin', id: '1' }
       }
+      
+      // 如果使用了 store，这里可以直接存储；最保险的方式是写入本地缓存并强制跳转
+      localStorage.setItem('GO_VIEW_USER_INFO', JSON.stringify(mockUser))
+      
+      // 2. 直接跳转到工作台页面
+      router.push({
+        path: '/project/items'
+      })
+      
       loading.value = false
-    } else {
-      window['$message'].error(t('login.login_message'))
     }
   })
 }
